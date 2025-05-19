@@ -1,4 +1,3 @@
-
 import asyncio
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -58,10 +57,10 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
-            caption=f"{username}, УВАГА❗️
+            caption=f"""{username}, УВАГА❗️
 ОБОВʼЯЗКОВА ПЕРЕВІРКА!
 
-👇 Підтвердіть, що вам є 18 років?",
+👇 Підтвердіть, що вам є 18 років?""",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("Мені є 18 ✅", url="https://t.me/YOUR_LINK")],
                 [InlineKeyboardButton("Мені немає 18 ❌", url="https://t.me/YOUR_LINK")],
@@ -80,9 +79,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
-            caption=f"{username}, Просимо вас вказати свою стать!
+            caption=f"""{username}, Просимо вас вказати свою стать!
 
-❗ Оберіть свою стать та натисніть на неї ❗",
+❗ Оберіть свою стать та натисніть на неї ❗""",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("Я ЖІНКА 👩", url="https://t.me/YOUR_LINK")],
                 [InlineKeyboardButton("Я ЧОЛОВІК 👨", url="https://t.me/YOUR_LINK")],
@@ -115,8 +114,8 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
-            caption=f"🔔 {username}, Ваша заявка схвалена,
-для отримання доступу натисніть «ПІДТВЕРДИТИ»",
+            caption=f"""🔔 {username}, Ваша заявка схвалена,
+для отримання доступу натисніть «ПІДТВЕРДИТИ»""",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/YOUR_LINK")],
             ])
