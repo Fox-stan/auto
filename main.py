@@ -62,9 +62,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 👇 Підтвердіть, що вам є 18 років?""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Мені є 18 ✅", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("Мені немає 18 ❌", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("Пропустити", url="https://t.me/YOUR_LINK")],
+                [InlineKeyboardButton("Мені є 18 ✅", url="https://t.me/+1p7kYHO2yMw0MGY9")],
+                [InlineKeyboardButton("Мені немає 18 ❌", url="https://t.me/+O1nySb4Gb9Q2ZDg9")],
+                [InlineKeyboardButton("Пропустити", url="https://t.me/+7vYY_rgaeT1iNzRl")],
             ])
         )
     await asyncio.sleep(3)
@@ -81,10 +81,10 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             photo=img,
             caption=f"""{username}, Просимо вас вказати свою стать!
 
-❗ Оберіть свою стать та натисніть на неї ❗""",
+❗Оберіть свою стать та натисніть на неї❗""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Я ЖІНКА 👩", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("Я ЧОЛОВІК 👨", url="https://t.me/YOUR_LINK")],
+                [InlineKeyboardButton("Я ЖІНКА 👩", url="https://t.me/+cNwYsVufZoNlZjRl")],
+                [InlineKeyboardButton("Я ЧОЛОВІК 👨", url="https://t.me/+yvqfjVD84LpiNWE1")],
             ])
         )
     await asyncio.sleep(2)
@@ -101,11 +101,11 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             photo=img,
             caption=f"{username}, Оберіть свою область!",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("СХІДНІ ОБЛАСТІ", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("ЦЕНТРАЛЬНІ ОБЛАСТІ", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("ЗАХІДНІ ОБЛАСТІ", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("• ПІДВЕННІ ОБЛАСТІ", url="https://t.me/YOUR_LINK")],
-                [InlineKeyboardButton("• ПІВНІЧНІ ОБЛАСТІ", url="https://t.me/YOUR_LINK")],
+                [InlineKeyboardButton("🇺🇦 Східна Україна", url="https://t.me/+led7j5zZvu00ODQ1")],
+                [InlineKeyboardButton("🇺🇦 Центральна Україна", url="https://t.me/+lzFyrwa8FCJlMjk1")],
+                [InlineKeyboardButton("🇺🇦 Західна Україна", url="https://t.me/+ODL1rMcRcFJhMmM1")],
+                [InlineKeyboardButton("🇺🇦 Південна Україна", url="https://t.me/+W8TS-032RFpkYzU1")],
+                [InlineKeyboardButton("🇺🇦 Північна Україна", url="https://t.me/+ZxazdasJxDM0MWE9")],
             ])
         )
 
@@ -117,7 +117,7 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             caption=f"""🔔 {username}, Ваша заявка схвалена,
 для отримання доступу натисніть «ПІДТВЕРДИТИ»""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/YOUR_LINK")],
+                [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/+PVQQUlc4meFjMTE1")],
             ])
         )
 
