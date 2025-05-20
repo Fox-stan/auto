@@ -62,12 +62,30 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 👇 Підтвердіть, що вам є 18 років?""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Мені є 18 ✅", url="https://t.me/+1p7kYHO2yMw0MGY9")],
-                [InlineKeyboardButton("Мені немає 18 ❌", url="https://t.me/+O1nySb4Gb9Q2ZDg9")],
-                [InlineKeyboardButton("Пропустити", url="https://t.me/+7vYY_rgaeT1iNzRl")],
+                [InlineKeyboardButton("Мені є 18 ✅", url="https://t.me/+9HZXshlGyOZiMGVl")],
+                [InlineKeyboardButton("Мені немає 18 ❌", url="https://t.me/+_41Qv55A-X84MGE9")],
+                [InlineKeyboardButton("Пропустити", url="https://t.me/+mqiW2ngd--Y1Y2U1")],
             ])
         )
     await asyncio.sleep(3)
+
+  # 2-2 сообщение
+    with open("6.jpeg", "rb") as img:
+        message = await context.bot.send_photo(
+            chat_id=chat_id,
+            photo=img,
+            caption=f"""{username}, УВАГА❗️
+ОБОВʼЯЗКОВА ПЕРЕВІРКА!
+
+👇 Підтвердіть, що вам є 18 років?""",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("ДИВИТИСЯ ВІДЕО", url="https://t.me/+rmaupgN4ZDcyMGZl")],
+                [InlineKeyboardButton("ЗАЛИШИТИ КОМЕНТАР", url="https://t.me/+rmaupgN4ZDcyMGZl")],
+                
+            ])
+        )
+    await asyncio.sleep(3)
+
 
     # 3 сообщение
     message = await context.bot.send_message(chat_id=chat_id, text="Запит знаходиться в обробці...⌛")
@@ -79,12 +97,14 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
-            caption=f"""{username}, Просимо вас вказати свою стать!
+            caption=f"""💬 Коментарі соцмереж вже вибухають
 
-❗Оберіть свою стать та натисніть на неї❗""",
+Це відео побачив кожен другий українець — а ти ще ні?
+
+Не залишайся осторонь!""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Я ЖІНКА 👩", url="https://t.me/+cNwYsVufZoNlZjRl")],
-                [InlineKeyboardButton("Я ЧОЛОВІК 👨", url="https://t.me/+yvqfjVD84LpiNWE1")],
+                [InlineKeyboardButton("Я ЖІНКА 👩", url="https://t.me/+YHtR-mrnU_4yZGE1")],
+                [InlineKeyboardButton("Я ЧОЛОВІК 👨", url="https://t.me/+N6_OqsI5JoJkZmRl")],
             ])
         )
     await asyncio.sleep(2)
@@ -101,11 +121,11 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             photo=img,
             caption=f"{username}, Оберіть свою область!",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🇺🇦 Східна Україна", url="https://t.me/+led7j5zZvu00ODQ1")],
-                [InlineKeyboardButton("🇺🇦 Центральна Україна", url="https://t.me/+lzFyrwa8FCJlMjk1")],
-                [InlineKeyboardButton("🇺🇦 Західна Україна", url="https://t.me/+ODL1rMcRcFJhMmM1")],
-                [InlineKeyboardButton("🇺🇦 Південна Україна", url="https://t.me/+W8TS-032RFpkYzU1")],
-                [InlineKeyboardButton("🇺🇦 Північна Україна", url="https://t.me/+ZxazdasJxDM0MWE9")],
+                [InlineKeyboardButton("🇺🇦 Східна Україна", url="https://t.me/+8RSGQFhllDgwMzI1")],
+                [InlineKeyboardButton("🇺🇦 Центральна Україна", url="https://t.me/+kTrA8INEr_41Y2E1")],
+                [InlineKeyboardButton("🇺🇦 Західна Україна", url="https://t.me/+_JU73CfrepM0Y2M9")],
+                [InlineKeyboardButton("🇺🇦 Південна Україна", url="https://t.me/+Qm7nbtxBfh83NTVl")],
+                [InlineKeyboardButton("🇺🇦 Північна Україна", url="https://t.me/+snd6k-IWzKJmY2M1")],
             ])
         )
 
@@ -117,7 +137,7 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             caption=f"""🔔 {username}, Ваша заявка схвалена,
 для отримання доступу натисніть «ПІДТВЕРДИТИ»""",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/+PVQQUlc4meFjMTE1")],
+                [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/+5rBW_rjAAPw3OTQ9")],
             ])
         )
 
