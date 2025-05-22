@@ -12,10 +12,10 @@ import threading
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# === ВАЖНО: глобальный словарь для хранения данных пользователей ===
+# === Словарь для хранения временных данных пользователей ===
 user_contexts = {}
 
-# Мини-сервер для UptimeRobot или проверки активности
+# Flask-сервер для UptimeRobot
 flask_app = Flask(__name__)
 
 @flask_app.route('/')
@@ -31,7 +31,6 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     chat_id = user.id
     username = user.first_name
 
-    # Сохраняем имя пользователя
     user_contexts[chat_id] = {
         "username": username
     }
@@ -46,13 +45,21 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
             ])
         )
 
-# Когда пользователь нажал кнопку
+# Когда пользователь нажал на кнопку
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
     chat_id = query.from_user.id
-    username = user_contexts.get(chat_id, {}).get("username", "Користувач")
+
+    if chat_id not in user_contexts:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="⚠️ Дані не знайдено. Спробуйте знову вступити в канал."
+        )
+        return
+
+    username = user_contexts[chat_id]["username"]
 
     # 2 сообщение
     with open("1.jpeg", "rb") as img:
@@ -143,7 +150,6 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     threading.Thread(target=run_flask).start()
-
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(ChatJoinRequestHandler(handle_join_request))
     app.add_handler(CallbackQueryHandler(handle_button))
