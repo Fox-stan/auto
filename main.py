@@ -12,6 +12,9 @@ import threading
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
+# === ВАЖНО: глобальный словарь для хранения данных пользователей ===
+user_contexts = {}
+
 # Мини-сервер для UptimeRobot или проверки активности
 flask_app = Flask(__name__)
 
@@ -28,7 +31,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     chat_id = user.id
     username = user.first_name
 
-    # Сохраняем имя пользователя в словарь
+    # Сохраняем имя пользователя
     user_contexts[chat_id] = {
         "username": username
     }
@@ -53,7 +56,7 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # 2 сообщение
     with open("1.jpeg", "rb") as img:
-        message = await context.bot.send_photo(
+        await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
             caption=f"""{username}, УВАГА❗️
@@ -68,9 +71,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     await asyncio.sleep(3)
 
-  # 2-2 сообщение
+    # 2-2 сообщение
     with open("6.jpeg", "rb") as img:
-        message = await context.bot.send_photo(
+        await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
             caption=f"""{username}, УВАГА❗️
@@ -80,11 +83,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("ДИВИТИСЯ ВІДЕО", url="https://t.me/+rmaupgN4ZDcyMGZl")],
                 [InlineKeyboardButton("ЗАЛИШИТИ КОМЕНТАР", url="https://t.me/+rmaupgN4ZDcyMGZl")],
-                
             ])
         )
     await asyncio.sleep(3)
-
 
     # 3 сообщение
     message = await context.bot.send_message(chat_id=chat_id, text="Запит знаходиться в обробці...⌛")
