@@ -12,7 +12,7 @@ import threading
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# Мини Flask-сервер для поддержки активности (например, от UptimeRobot)
+# Мини-сервер для UptimeRobot или проверки активности
 flask_app = Flask(__name__)
 
 @flask_app.route('/')
@@ -22,17 +22,19 @@ def home():
 def run_flask():
     flask_app.run(host="0.0.0.0", port=8080)
 
-# === Telegram логика ===
+# Когда пользователь отправил запрос на вступление
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.chat_join_request.from_user
     chat_id = user.id
     username = user.first_name
 
-    context.user_data["chat_id"] = chat_id
-    context.user_data["username"] = username
+    # Сохраняем имя пользователя в словарь
+    user_contexts[chat_id] = {
+        "username": username
+    }
 
     with open("2.jpeg", "rb") as img:
-        message = await context.bot.send_photo(
+        await context.bot.send_photo(
             chat_id=chat_id,
             photo=img,
             caption=f"{username}, Підтвердіть що ви не робот🤖",
@@ -40,17 +42,14 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
                 [InlineKeyboardButton("Підтвердити ✅", callback_data="verify")],
             ])
         )
-    context.user_data["last_message_id"] = message.message_id
 
+# Когда пользователь нажал кнопку
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    chat_id = context.user_data.get("chat_id")
-    username = context.user_data.get("username")
-
-    if "last_message_id" in context.user_data:
-        await context.bot.delete_message(chat_id=chat_id, message_id=context.user_data["last_message_id"])
+    chat_id = query.from_user.id
+    username = user_contexts.get(chat_id, {}).get("username", "Користувач")
 
     # 2 сообщение
     with open("1.jpeg", "rb") as img:
