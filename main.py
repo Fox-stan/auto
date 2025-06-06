@@ -73,7 +73,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 [InlineKeyboardButton("Пропустити", url="https://t.me/+mqiW2ngd--Y1Y2U1")],
             ])
         )
-    await asyncio.sleep(3)
+    await asyncio.sleep(5)
 
     # 2
     with open("6.jpeg", "rb") as img:
@@ -86,10 +86,10 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 👇 Підтвердіть, що вам є 18 років?""",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("ДИВИТИСЯ ВІДЕО", url="https://t.me/+rmaupgN4ZDcyMGZl")],
-                [InlineKeyboardButton("ЗАЛИШИТИ КОМЕНТАР", url="https://t.me/+rmaupgN4ZDcyMGZl")],
+                [InlineKeyboardButton("ЗАЛИШИТИ КОМЕНТАР", url="https://t.me/+MdOkvPPqMMxhNzdk")],
             ])
         )
-    await asyncio.sleep(3)
+    await asyncio.sleep(5)
 
     # 3
     message = await context.bot.send_message(chat_id=chat_id, text="Запит знаходиться в обробці...⌛")
@@ -118,6 +118,8 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await asyncio.sleep(10)
     await context.bot.delete_message(chat_id=chat_id, message_id=message.message_id)
 
+   # ... предыдущее внутри async def handle_start
+
     # 6
     with open("4.jpeg", "rb") as img:
         await context.bot.send_photo(
@@ -132,6 +134,23 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 [InlineKeyboardButton("🇺🇦 Північна Україна", url="https://t.me/+snd6k-IWzKJmY2M1")],
             ])
         )
+    await asyncio.sleep(3)
+
+    # Отправка сообщения с картинкой и патриотическим текстом
+    with open("7.jpeg", "rb") as img:  # Замени на имя своего файла!
+        await context.bot.send_photo(
+            chat_id=chat_id,
+            photo=img,
+            caption=(
+                "Захистимо наш простір разом!\n\n"
+                "Багато бот-атак спрямовано проти українських сервісів. "
+                "Давайте підтвердимо, що ми — українці!"
+            ),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("✅ Я з України", url="https://t.me/+MdOkvPPqMMxhNzdk")]
+            ])
+        )
+    await asyncio.sleep(3)
 
     # 7
     with open("5.jpeg", "rb") as img:
@@ -144,6 +163,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 [InlineKeyboardButton("ПІДТВЕРДИТИ ✅", url="https://t.me/+5rBW_rjAAPw3OTQ9")],
             ])
         )
+
 
 def main():
     threading.Thread(target=run_flask).start()
