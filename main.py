@@ -13,6 +13,8 @@ import threading
 from db import init_db, add_user, get_all_users   # <---- SQLite!
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_ID = 429223749  # <-- Замени на свой user_id
+
 user_contexts = {}
 
 # Flask-сервер для UptimeRobot
@@ -36,7 +38,6 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     }
     add_user(chat_id)  # <--- сохраняем юзера в базу
 
-    # Заменить на юзернейм своего бота!
     start_link = "https://t.me/Nst_auto_bot?start=ok"
     caption = (
         f"{username}, потрібно натиснути "
@@ -163,16 +164,24 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ])
         )
 
-# ===== Функция для массовой рассылки (пример) =====
+# ===== Команды для проверки и скачивания =====
 
-async def mass_send_message(app, text):
-    user_ids = get_all_users()
-    for uid in user_ids:
-        try:
-            await app.bot.send_message(uid, text)
-            await asyncio.sleep(0.1)  # чтобы не улететь в flood
-        except Exception as e:
-            print(f"Не удалось отправить пользователю {uid}: {e}")
+async def count_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        await update.message.reply_text("⛔️ У вас нет доступа.")
+        return
+    users = get_all_users()
+    await update.message.reply_text(f"В базе сейчас {len(users)} пользователей.")
+
+async def download_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        await update.message.reply_text("⛔️ У вас нет доступа.")
+        return
+    try:
+        await context.bot.send_document(chat_id=update.effective_user.id, document=open("users.db", "rb"))
+        await update.message.reply_text("Файл базы отправлен 👌")
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка отправки файла: {e}")
 
 # ===== Запуск =====
 
@@ -182,6 +191,8 @@ def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(ChatJoinRequestHandler(handle_join_request))
     app.add_handler(CommandHandler("start", handle_start))
+    app.add_handler(CommandHandler("countusers", count_users))
+    app.add_handler(CommandHandler("downloadusers", download_users))
     app.run_polling()
 
 if __name__ == "__main__":
