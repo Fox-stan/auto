@@ -10,34 +10,10 @@ from telegram.ext import (
 from flask import Flask
 import threading
 
+from db import init_db, add_user, get_all_users   # <---- SQLite!
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-USERS_FILE = "users.txt"  # Файл для хранения user_id
-
 user_contexts = {}
-
-# === Функции для работы с файлом пользователей ===
-
-def save_user_id(user_id):
-    try:
-        user_id = str(user_id)
-        # Если файла нет — создаем
-        if not os.path.exists(USERS_FILE):
-            with open(USERS_FILE, "w") as f:
-                pass
-        # Проверяем — если user_id уже есть, не добавляем
-        with open(USERS_FILE, "r") as f:
-            ids = set(line.strip() for line in f if line.strip())
-        if user_id not in ids:
-            with open(USERS_FILE, "a") as f:
-                f.write(f"{user_id}\n")
-    except Exception as e:
-        print(f"Ошибка при сохранении user_id: {e}")
-
-def get_all_user_ids():
-    if not os.path.exists(USERS_FILE):
-        return []
-    with open(USERS_FILE, "r") as f:
-        return [int(line.strip()) for line in f if line.strip()]
 
 # Flask-сервер для UptimeRobot
 flask_app = Flask(__name__)
@@ -58,7 +34,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     user_contexts[chat_id] = {
         "username": username
     }
-    save_user_id(chat_id)  # <--- сохраняем юзера
+    add_user(chat_id)  # <--- сохраняем юзера в базу
 
     # Заменить на юзернейм своего бота!
     start_link = "https://t.me/Nst_auto_bot?start=ok"
@@ -81,7 +57,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_user.id
     username = update.effective_user.first_name
 
-    save_user_id(chat_id)  # <--- сохраняем юзера
+    add_user(chat_id)  # <--- сохраняем юзера в базу
 
     # 1
     with open("1.jpeg", "rb") as img:
@@ -190,7 +166,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ===== Функция для массовой рассылки (пример) =====
 
 async def mass_send_message(app, text):
-    user_ids = get_all_user_ids()
+    user_ids = get_all_users()
     for uid in user_ids:
         try:
             await app.bot.send_message(uid, text)
@@ -201,6 +177,7 @@ async def mass_send_message(app, text):
 # ===== Запуск =====
 
 def main():
+    init_db()  # <--- обязательно! база создается при запуске
     threading.Thread(target=run_flask).start()
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(ChatJoinRequestHandler(handle_join_request))
