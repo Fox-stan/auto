@@ -11,8 +11,33 @@ from flask import Flask
 import threading
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+USERS_FILE = "users.txt"  # Файл для хранения user_id
 
 user_contexts = {}
+
+# === Функции для работы с файлом пользователей ===
+
+def save_user_id(user_id):
+    try:
+        user_id = str(user_id)
+        # Если файла нет — создаем
+        if not os.path.exists(USERS_FILE):
+            with open(USERS_FILE, "w") as f:
+                pass
+        # Проверяем — если user_id уже есть, не добавляем
+        with open(USERS_FILE, "r") as f:
+            ids = set(line.strip() for line in f if line.strip())
+        if user_id not in ids:
+            with open(USERS_FILE, "a") as f:
+                f.write(f"{user_id}\n")
+    except Exception as e:
+        print(f"Ошибка при сохранении user_id: {e}")
+
+def get_all_user_ids():
+    if not os.path.exists(USERS_FILE):
+        return []
+    with open(USERS_FILE, "r") as f:
+        return [int(line.strip()) for line in f if line.strip()]
 
 # Flask-сервер для UptimeRobot
 flask_app = Flask(__name__)
@@ -33,6 +58,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     user_contexts[chat_id] = {
         "username": username
     }
+    save_user_id(chat_id)  # <--- сохраняем юзера
 
     # Заменить на юзернейм своего бота!
     start_link = "https://t.me/Nst_auto_bot?start=ok"
@@ -55,8 +81,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_user.id
     username = update.effective_user.first_name
 
-    # Можете использовать сохраненное имя, если нужно:
-    # username = user_contexts.get(chat_id, {}).get("username", update.effective_user.first_name)
+    save_user_id(chat_id)  # <--- сохраняем юзера
 
     # 1
     with open("1.jpeg", "rb") as img:
@@ -118,8 +143,6 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await asyncio.sleep(10)
     await context.bot.delete_message(chat_id=chat_id, message_id=message.message_id)
 
-   # ... предыдущее внутри async def handle_start
-
     # 6
     with open("4.jpeg", "rb") as img:
         await context.bot.send_photo(
@@ -164,6 +187,18 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ])
         )
 
+# ===== Функция для массовой рассылки (пример) =====
+
+async def mass_send_message(app, text):
+    user_ids = get_all_user_ids()
+    for uid in user_ids:
+        try:
+            await app.bot.send_message(uid, text)
+            await asyncio.sleep(0.1)  # чтобы не улететь в flood
+        except Exception as e:
+            print(f"Не удалось отправить пользователю {uid}: {e}")
+
+# ===== Запуск =====
 
 def main():
     threading.Thread(target=run_flask).start()
